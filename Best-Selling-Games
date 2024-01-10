@@ -1,0 +1,89 @@
+/*
+An exploration of best selling pc games
+Dataset found on Kaggle follow link here -> https://www.kaggle.com/datasets/khaiid/most-selling-pc-games
+
+Skills used: Importing existing data, Altering tables, Aggregate functions, CTE's 
+
+Questions looking to answer:
+1) Which genre is most popular?
+2) Which publisher published the most amount of games?
+3) Which developer developed the most amount of games?
+4) Which series is most popular? 
+
+Additional questions:
+1) is the publisher with the most amount of games the publisher with the most amount of sales?
+2) what are the top 3 most popular games? 
+
+*/
+
+SELECT * 
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+
+--Code to pull up the table that I will use to answer these questions.
+
+
+
+ALTER TABLE `sqlprojects-401615.game_sales.best_sellers`
+RENAME COLUMN Sales TO Sales_in_Millions 
+
+--It was not clear what the sales were being measured in. This column name changed helped clarify that the numbers were in millions.
+
+
+
+SELECT  sum(Sales_in_Millions) as Sum_of_Sales, Genre 
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+GROUP BY Genre
+ORDER BY Sum_of_Sales DESC
+
+- selected the highest sum of sales per genre to find which genre was most popular. Action role-playing games as a genre generated the most sales 
+
+
+
+SELECT count(name) as  Number_Of_Games, publisher
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+GROUP BY Publisher
+ORDER BY Number_Of_Games DESC
+Limit 1 
+
+ --shows that Electronic Arts was the publisher that published the most amount of games
+
+
+
+SELECT  sum(Sales_in_Millions) as Sum_of_Sales, publisher 
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+GROUP BY Publisher
+ORDER BY Sum_of_Sales DESC
+
+--I wanted to know if there was a correlation between the publisher with the most amount of games published and the published that made the largest sum in sales
+There did not appear to be a direct correlation. Blizzard was the had the largest sum with 59 million, then Electronic Arts with 54 million
+
+
+
+
+SELECT count(name) as  Number_Of_Games, developer
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+GROUP BY Developer
+ORDER BY Number_Of_Games DESC
+Limit 1 
+
+ -- shows that Blizzard Entertainment was the developer that developed the most amount of games 
+
+
+
+SELECT  sum(Sales_in_Millions) as Sum_of_Sales, Series 
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+WHERE series is not null 
+GROUP BY Series
+ORDER BY Sum_of_Sales DESC
+
+--Minecraft is the most popular game series. to find this I needed to exclude the games that were not apart of a series
+
+
+
+SELECT * 
+FROM `sqlprojects-401615.game_sales.best_sellers` 
+ORDER BY  Sales_in_Millions desc
+Limit 3 
+
+--used this code to determine the 3 best selling game on the list
+PlayerUnknown's Battlegrounds was at the top of the list followed by Minecraft and Gary's Mod
