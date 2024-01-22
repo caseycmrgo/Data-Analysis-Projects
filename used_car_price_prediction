@@ -106,16 +106,20 @@ from `my-data-project-12345-391422.predictions.used_car_prices`
 
 --created a new table to reorder the columns in a meaningful way 
 
+
 select * from predictions.used_car_prices_v2
 
 ---I am planning on buying a car in the future.I want to use this table to understand what cars are within my budget and what cars I would perfer are going for. 
 I can also use this table to help me get an idea of what I can sell my car for. 
+
+
 
 UPDATE predictions.used_car_prices_v2
 SET miles = REGEXP_REPLACE(miles, '[^0-9]', '')
 WHERE miles IS NOT NULL;
 
 --After bringing up the table I realized that the miles column contained the word miles next to each number. This is redundant and unnecessary. This code eliminated the word miles in the column. 
+
 
 select * from predictions.used_car_prices_v2
 order by price desc
@@ -132,6 +136,7 @@ WHERE make LIKE '%Aston%';
 DELETE FROM  `my-data-project-12345-391422.predictions.used_car_prices_v2`
 WHERE make LIKE '%Rolls-Royce%';
 --This code was used to remove the outliers for all three. 
+
 
 select * from predictions.used_car_prices_v2
 order by price desc
