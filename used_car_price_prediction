@@ -1,4 +1,14 @@
 /*
+An exploration of used car price prediction
+Dataset found on Kaggle follow link here -> https://www.kaggle.com/datasets/ayaz11/used-car-price-prediction
+
+Skills used: Importing existing data, Altering tables, Aggregate functions, CTE's 
+
+For this exploration I really wanted to get a good picure of what the average pricess were for cars based on make, the number of miles, and year. 
+
+This data set was visualized in Tableau here ---> https://public.tableau.com/views/UsedCarsPricePrediction/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link
+
+/*
 SELECT *
  FROM `my-data-project-12345-391422.predictions.used_car_prices` 
 
