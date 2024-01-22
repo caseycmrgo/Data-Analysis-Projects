@@ -1,0 +1,147 @@
+/*
+SELECT *
+ FROM `my-data-project-12345-391422.predictions.used_car_prices` 
+
+--Brought up table
+
+
+alter table predictions.used_car_prices
+ADD COLUMN make STRING, ADD COLUMN model STRING;
+
+UPDATE predictions.used_car_prices
+SET
+  make = SUBSTRING(name, 1, STRPOS(name, ' ') - 1),
+model = SUBSTRING(name, STRPOS(name, ' ') + 1)
+where true;
+
+--used these two set of codes to add columns. I want to split information from the old column into the two new columns
+
+
+alter table predictions.used_car_prices 
+drop column name
+
+--Deleted the old column that was no longer useful 
+
+
+alter table predictions.used_car_prices
+ADD COLUMN color_interior STRING, ADD COLUMN color_exterior STRING;
+
+
+UPDATE predictions.used_car_prices
+SET
+  color_interior = SUBSTRING(color, 1, STRPOS(color, ',') - 1),
+color_exterior = SUBSTRING(color, STRPOS(color, ',') + 1)
+where true;
+
+alter table predictions.used_car_prices 
+drop column color
+
+--used these two set of codes to add columns. I want to split information from the old column into the two new columns
+
+
+SELECT *
+ FROM `my-data-project-12345-391422.predictions.used_car_prices` 
+ 
+ --brought up the table to check my work 
+
+
+alter table predictions.used_car_prices 
+rename column color_interior to exterior
+
+
+alter table predictions.used_car_prices 
+rename column color_exterior to interior
+
+
+--I had made a mistake when I transfered the old data to the new column, i used this code to fix it 
+
+
+SELECT *
+ FROM `my-data-project-12345-391422.predictions.used_car_prices` 
+ 
+ --brought up the table to check my work 
+
+
+alter table `my-data-project-12345-391422.predictions.used_car_prices`
+ADD Column accidents string, add column owners string
+
+
+ update `my-data-project-12345-391422.predictions.used_car_prices`
+ set
+ accidents = substring(condition, 1, strpos(condition, ',') -1),
+ owners = substring(condition, strpos(condition, ',') +1)
+ where true;
+
+ 
+alter table predictions.used_car_prices
+drop column condition
+
+
+select * from predictions.used_car_prices
+
+--checking my work
+
+create table predictions.used_car_prices_v2 as 
+select 
+make,
+model,
+year,
+miles,
+price,
+accidents,
+owners,
+interior,
+exterior
+from `my-data-project-12345-391422.predictions.used_car_prices`
+
+--created a new table to reorder the columns in a meaningful way 
+
+select * from predictions.used_car_prices_v2
+
+---I am planning on buying a car in the future.I want to use this table to understand what cars are within my budget and what cars I would perfer are going for. 
+I can also use this table to help me get an idea of what I can sell my car for. 
+
+UPDATE predictions.used_car_prices_v2
+SET miles = REGEXP_REPLACE(miles, '[^0-9]', '')
+WHERE miles IS NOT NULL;
+
+--After bringing up the table I realized that the miles column contained the word miles next to each number. This is redundant and unnecessary. This code eliminated the word miles in the column. 
+
+select * from predictions.used_car_prices_v2
+order by price desc
+
+-- After the last run of the table I was wondering if there were any outliers that I really did not need. There are three luxury brands that do not fit into the use of this table 
+
+
+DELETE FROM  `my-data-project-12345-391422.predictions.used_car_prices_v2`
+WHERE make LIKE '%McLaren%';
+
+DELETE FROM  `my-data-project-12345-391422.predictions.used_car_prices_v2`
+WHERE make LIKE '%Aston%';
+
+DELETE FROM  `my-data-project-12345-391422.predictions.used_car_prices_v2`
+WHERE make LIKE '%Rolls-Royce%';
+--This code was used to remove the outliers for all three. 
+
+select * from predictions.used_car_prices_v2
+order by price desc
+
+--used this code to check that my previous code did what I needed for it to do
+
+
+create table predictions.used_car_prices_v3 as 
+select 
+make,
+model,
+year,
+CAST(miles AS INT) AS miles,
+price,
+accidents,
+owners,
+interior,
+exterior
+from `my-data-project-12345-391422.predictions.used_car_prices_v2`
+
+--I created a third version of this table to keep things organized for myself.
+
+*/
